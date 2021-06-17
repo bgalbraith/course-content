@@ -32,10 +32,15 @@ jobs:
         python ci/generate_book.py
         jupyter-book build tutorials
 
-    - name: Publish to gh-pages
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Commit book
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        ghp-import -n -p -f tutorials/_build/html
+        ghp-import -n -m "Update course book" tutorials/_build/html
+
+    - name: Publish to gh-pages
+      uses: ad-m/github-push-action@v0.6.0
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: gh-pages
+        force: true
