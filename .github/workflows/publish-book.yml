@@ -30,13 +30,14 @@ jobs:
     - name: Build the book
       run: |
         python ci/generate_book.py
-        jupyter-book build tutorials
+        ln -s ../tutorials book/tutorials
+        jupyter-book build book
 
     - name: Commit book
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        ghp-import -n -m "Update course book" tutorials/_build/html
+        ghp-import -n -m "Update course book" book/_build/html
         git checkout gh-pages
 
     - name: Publish to gh-pages
